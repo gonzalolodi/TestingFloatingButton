@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -20,7 +21,7 @@ import com.software.shell.fab.ActionButton;
 public class FragmentMain extends Fragment {
 
     //RelativeLayout mRelativeLayout;
-    AbsListView scrollView;
+    ListView listView;
 
     public FragmentMain() {
     }
@@ -32,8 +33,8 @@ public class FragmentMain extends Fragment {
         final ActionButton actionButton = (ActionButton) rootView.findViewById(R.id.action_button);
         actionButton.setShowAnimation(ActionButton.Animations.ROLL_FROM_RIGHT);
         actionButton.setHideAnimation(ActionButton.Animations.ROLL_TO_DOWN);
-        scrollView = (AbsListView) rootView.findViewById(R.id.scrollview);
-        scrollView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        listView = (ListView) rootView.findViewById(R.id.list_scrollable);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 actionButton.hide();
