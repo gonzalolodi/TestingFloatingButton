@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.software.shell.fab.ActionButton;
 
@@ -15,9 +17,7 @@ import com.software.shell.fab.ActionButton;
  */
 public class FragmentMain extends Fragment {
 
-    Button mButtonShow;
-    Button mButtonHide;
-
+    RelativeLayout relativeLayout;
 
     public FragmentMain() {
     }
@@ -28,26 +28,22 @@ public class FragmentMain extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final ActionButton actionButton = (ActionButton) rootView.findViewById(R.id.action_button);
         actionButton.setShowAnimation(ActionButton.Animations.ROLL_FROM_RIGHT);
-        actionButton.setHideAnimation(ActionButton.Animations.ROLL_TO_RIGHT);
-        mButtonShow = (Button) rootView.findViewById(R.id.button_show);
-        mButtonHide = (Button) rootView.findViewById(R.id.button_hide);
-        View.OnClickListener listener = new View.OnClickListener() {
+        actionButton.setHideAnimation(ActionButton.Animations.ROLL_TO_DOWN);
+        relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relative_layout);
+        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.button_show:
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    actionButton.hide();
+                }else{
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
                         actionButton.show();
-                        break;
-                    case R.id.button_hide:
-                        actionButton.hide();
-                        break;
-
+                    }
                 }
+                return true;
             }
-        };
-        mButtonShow.setOnClickListener(listener);
-        mButtonHide.setOnClickListener(listener);
-        actionButton.setShowAnimation(ActionButton.Animations.ROLL_FROM_RIGHT);
+        });
+
         return rootView;
     }
 }
