@@ -4,9 +4,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.software.shell.fab.ActionButton;
 
@@ -15,9 +19,8 @@ import com.software.shell.fab.ActionButton;
  */
 public class FragmentMain extends Fragment {
 
-    Button mButtonShow;
-    Button mButtonHide;
-
+    //RelativeLayout mRelativeLayout;
+    AbsListView scrollView;
 
     public FragmentMain() {
     }
@@ -28,26 +31,32 @@ public class FragmentMain extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final ActionButton actionButton = (ActionButton) rootView.findViewById(R.id.action_button);
         actionButton.setShowAnimation(ActionButton.Animations.ROLL_FROM_RIGHT);
-        actionButton.setHideAnimation(ActionButton.Animations.ROLL_TO_RIGHT);
-        mButtonShow = (Button) rootView.findViewById(R.id.button_show);
-        mButtonHide = (Button) rootView.findViewById(R.id.button_hide);
-        View.OnClickListener listener = new View.OnClickListener() {
+        actionButton.setHideAnimation(ActionButton.Animations.ROLL_TO_DOWN);
+        scrollView = (AbsListView) rootView.findViewById(R.id.scrollview);
+        scrollView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.button_show:
-                        actionButton.show();
-                        break;
-                    case R.id.button_hide:
-                        actionButton.hide();
-                        break;
-
-                }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                actionButton.hide();
             }
-        };
-        mButtonShow.setOnClickListener(listener);
-        mButtonHide.setOnClickListener(listener);
-        actionButton.setShowAnimation(ActionButton.Animations.ROLL_FROM_RIGHT);
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                actionButton.show();
+            }
+        });
+        /*mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.relative_layout);
+        mRelativeLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    // Do what you want
+                    actionButton.hide();
+                } if(event.getAction() == MotionEvent.ACTION_UP) {
+                    actionButton.show();
+                }
+                return true;
+            }
+        });*/
         return rootView;
     }
 }
